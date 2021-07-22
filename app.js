@@ -1,23 +1,32 @@
-const WHO = ["My sister", "My ex", "My evil bunny"];
-const ACTION = ["bite", "break", "eat"];
-const STUFF = ["the car", "my homework", "the internet"];
-const WHERE = ["yesterday", "an hour ago"];
-
-const EXCUSE_OPTIONS = [WHO, ACTION, STUFF, WHERE];
+const PRONOUMS = ['the', 'our', 'just'];
+const NOUNS = ['doit', 'malcom', 'breatcode', 'italia'];
+const EXTENSIONS = ['com', 'it', 'de'];
 
 window.onload = () => {
-    document.querySelector('#excuse').innerHTML = getExcuse();
+    getDomain();
 };
 
-function getExcuse() {
-    let excuse = [];
+function getDomain() {
+    let domain = [];
+    for(const pronoum of PRONOUMS) {
+        for(const noun of NOUNS) {
+            for(const extension of EXTENSIONS) {
+                let addExtension = checkExtension(pronoum.concat(noun), extension);
+                let firstPart = pronoum.concat(noun);
 
-    for(const list of EXCUSE_OPTIONS) {
-        excuse.push(list[getRandom(list)]);
+                if(addExtension) {
+                    let createIndexList = [...firstPart];
+                    createIndexList.splice(firstPart.length - extension.length, 0, '.')
+                    domain.push(createIndexList.join(''));
+                } else {
+                    domain.push(firstPart.concat('.', extension));
+                }
+            }
+        }
     }
-    return excuse.join(' ');
+    console.log(domain);
 }
 
-function getRandom(options) {
-    return Math.floor(Math.random() * options.length)
+function checkExtension(domain, extension) { 
+    return domain.includes(extension, domain.length - extension.length);
 }
